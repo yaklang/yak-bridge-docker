@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  bridge:
+    image: v1ll4n/yak-bridge:latest
+    network_mode: host
+    deploy:
+      restart_policy:
+        condition: always
+    command: yak bridge --secret awesome-yak-bridge@cybertunnel.run
+

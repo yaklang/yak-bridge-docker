@@ -1,0 +1,8 @@
+version: "2"
+
+services:
+  bridge:
+    image: v1ll4n/yak-bridge:latest
+    network_mode: host
+    restart: always
+    command: yak bridge --dnslog --domain dnstunnel.run

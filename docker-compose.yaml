@@ -7,5 +7,5 @@ services:
     deploy:
       restart_policy:
         condition: always
-    command: yak bridge --secret awesome-yak-bridge@cybertunnel.run
+    command: yak bridge --secret your-secret-for-yak-BRIDG3
 

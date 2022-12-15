@@ -11,6 +11,12 @@ service Tunnel {
 
   rpc CreateTunnel(stream TunnelInput) returns(stream TunnelOutput);
 
+  // 注册一个隧道
+  rpc RegisterTunnel(RegisterTunnelRequest) returns (RegisterTunnelResponse);
+  // 获取所有隧道的简要描述信息
+  rpc GetAllRegisteredTunnel(GetAllRegisteredTunnelRequest) returns (GetAllRegisteredTunnelResponse);
+  rpc GetRegisteredTunnelDescriptionByID(GetRegisteredTunnelDescriptionByIDRequest) returns (RegisteredTunnel);
+
   // 随机端口触发器
   rpc RequireRandomPortTrigger(RequireRandomPortTriggerParams) returns (RequireRandomPortTriggerResponse);
   rpc QueryExistedRandomPortTrigger(QueryExistedRandomPortTriggerRequest) returns (QueryExistedRandomPortTriggerResponse);
@@ -19,9 +25,50 @@ service Tunnel {
   rpc QuerySpecificICMPLengthTrigger(QuerySpecificICMPLengthTriggerParams) returns (QuerySpecificICMPLengthTriggerResponse);
 }
 
+message RegisterTunnelRequest {
+  bytes PublicKeyPEM = 1;
+  string Secret = 2;
+
+  // 用来描述 Tunnel 携带信息的，比如想要测试的机器名或者测试的内容之类的
+  string Verbose = 3;
+}
+
+message RegisterTunnelResponse {
+  string Id = 1;
+}
+
+message GetAllRegisteredTunnelRequest {
+  // 二级密码
+  string SecondaryPassword = 5;
+}
+
+message RegisterTunnelMeta {
+  string ConnectHost = 1;
+  int64 ConnectPort = 2;
+  string Id = 3;
+  string Verbose = 4;
+}
+
+message GetAllRegisteredTunnelResponse {
+  repeated RegisterTunnelMeta Tunnels = 1;
+}
+
+message GetRegisteredTunnelDescriptionByIDRequest {
+  string Id = 1;
+
+  // 二级密码
+  string SecondaryPassword = 2;
+}
+
+message RegisteredTunnel {
+  RegisterTunnelMeta Info = 1;
+  bytes Auth = 2;
+}
+
 message QuerySpecificICMPLengthTriggerParams {
   int32 Length = 1;
 }
+
 
 message ICMPTriggerNotification {
   int32 Size = 1;
